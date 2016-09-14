@@ -42,7 +42,8 @@ public class Termin implements Serializable {
     private Medsestra medsestra;
 
     public Termin() {
-    }
+        terminPK = new TerminPK();
+   }
 
     public Termin(TerminPK terminPK) {
         this.terminPK = terminPK;

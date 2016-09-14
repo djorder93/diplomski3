@@ -7,6 +7,7 @@ package domen;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -78,6 +79,8 @@ public class Pacijent implements Serializable {
     private String datFilter;
 
     public Pacijent() {
+        pregledList = new ArrayList<>();
+        terminList = new ArrayList<>();
     }
 
     public String getDatFilter() {

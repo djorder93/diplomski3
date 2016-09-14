@@ -24,9 +24,9 @@
                                  rowsPerPageTemplate="10,20,30,40,50"
                                  >
 
-                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
-                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
-
+                        <p:column style="width:16px">
+                            <p:rowToggler />
+                        </p:column>
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListPregledTitle_datum}"/>
@@ -39,21 +39,27 @@
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListPregledTitle_pacijent}"/>
                             </f:facet>
-                            <h:outputText value="#{item.pacijent}"/>
+                            <h:outputText value="#{item.pacijent.toString()}"/>
                         </p:column>
-                        <f:facet name="footer">
-                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{pregledController.prepareCreate}" update=":PregledCreateForm" oncomplete="PF('PregledCreateDialog').show()"/>
-                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":PregledViewForm" oncomplete="PF('PregledViewDialog').show()" disabled="#{empty pregledController.selected}"/>
-                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":PregledEditForm" oncomplete="PF('PregledEditDialog').show()" disabled="#{empty pregledController.selected}"/>
-                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{pregledController.destroy}" update=":growl,datalist" disabled="#{empty pregledController.selected}"/>
-                        </f:facet>
+                        <p:rowExpansion>
+                            <p:dataTable id="intervencije" scrollable="true" scrollHeight="200" scrollRows="2" 
+                                         var="interv" value="#{item.intervencijaList}" 
+                                         style="margin-left: 250px; width:800px;" >  
+                                <p:column>  
+                                    <f:facet name="header">  
+                                        <h:outputText value="Intervencije"></h:outputText>  
+                                    </f:facet>  
+                                    <h:outputText  value="#{interv.toString()}" />  
+                                </p:column>  
+                            </p:dataTable>  
+
+                        </p:rowExpansion>
+
                     </p:dataTable>
                 </p:panel>
             </h:form>
 
-            <ui:include src="Create.xhtml"/>
-            <ui:include src="Edit.xhtml"/>
-            <ui:include src="View.xhtml"/>
+
         </ui:define>
     </ui:composition>
 

@@ -6,6 +6,7 @@
 package domen;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -52,6 +53,7 @@ public class Pregled implements Serializable {
     private Pacijent pacijent;
 
     public Pregled() {
+        intervencijaList = new ArrayList<>();
     }
 
     public Pregled(Date datum) {
@@ -105,7 +107,7 @@ public class Pregled implements Serializable {
 
     @Override
     public String toString() {
-        return ""+datum;
+        return "" + datum;
     }
-    
+
 }

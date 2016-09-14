@@ -45,6 +45,8 @@ public class Intervencija implements Serializable {
     private Usluga usluga1;
 
     public Intervencija() {
+        zub1 = new Zub();
+        usluga1=new Usluga();
     }
 
     public Intervencija(IntervencijaPK intervencijaPK) {

@@ -11,67 +11,92 @@
         <p:dialog id="PacijentEditDlg" widgetVar="PacijentEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditPacijentTitle}">
             <h:form id="PacijentEditForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{pacijentController.selected != null}">
-                        <p:outputLabel value="#{bundle.EditPacijentLabel_ime}" for="ime" />
-                        <p:inputText id="ime" value="#{pacijentController.selected.ime}" title="#{bundle.EditPacijentTitle_ime}" />
-                        <p:outputLabel value="#{bundle.EditPacijentLabel_prezime}" for="prezime" />
-                        <p:inputText id="prezime" value="#{pacijentController.selected.prezime}" title="#{bundle.EditPacijentTitle_prezime}" />
-                        <p:outputLabel value="#{bundle.EditPacijentLabel_telefon}" for="telefon" />
-                        <p:inputMask id="telefon" value="#{pacijentController.selected.telefon}"  mask="999-99-99-99?" />
-                        <p:outputLabel value="#{bundle.EditPacijentLabel_datumrodjenja}" for="datumrodjenja" />
-                        <p:calendar id="datumrodjenja" pattern="dd/MM/yyyy" timeZone="GMT+2" value="#{pacijentController.selected.datumrodjenja}" title="#{bundle.EditPacijentTitle_datumrodjenja}"  showOn="button"/>
-                        <p:outputLabel value="#{bundle.EditPacijentLabel_doktor}" for="doktor" />
-                        <p:selectOneMenu id="doktor" value="#{pacijentController.selected.doktor}" >
-                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
-                            <f:selectItems value="#{doktorController.itemsAvailableSelectOne}"
-                                           var="doktorItem"
-                                           itemValue="#{doktorItem}"/>
-                        </p:selectOneMenu>
-                    </p:panelGrid>
-                     <p:separator/>
-                    <p:tabView>
+                    <p:tabView onTabShow="PF('PacijentEditDialog').initPosition();"  dynamic="true">
+                        <p:tab title="PACIJENT">
+                            <p:panelGrid columns="2" rendered="#{pacijentController.selected != null}">
+                                <p:outputLabel value="#{bundle.EditPacijentLabel_ime}" for="ime" />
+                                <p:inputText id="ime" value="#{pacijentController.selected.ime}" title="#{bundle.EditPacijentTitle_ime}" />
+                                <p:outputLabel value="#{bundle.EditPacijentLabel_prezime}" for="prezime" />
+                                <p:inputText id="prezime" value="#{pacijentController.selected.prezime}" title="#{bundle.EditPacijentTitle_prezime}" />
+                                <p:outputLabel value="#{bundle.EditPacijentLabel_telefon}" for="telefon" />
+                                <p:inputMask id="telefon" value="#{pacijentController.selected.telefon}"  mask="999-99-99-99?" />
+                                <p:outputLabel value="#{bundle.EditPacijentLabel_datumrodjenja}" for="datumrodjenja" />
+                                <p:calendar id="datumrodjenja" pattern="dd/MM/yyyy" timeZone="GMT+2" value="#{pacijentController.selected.datumrodjenja}" title="#{bundle.EditPacijentTitle_datumrodjenja}"  showOn="button"/>
+                                <p:outputLabel value="#{bundle.EditPacijentLabel_doktor}" for="doktor" />
+                                <p:selectOneMenu id="doktor" value="#{pacijentController.selected.doktor}" >
+                                    <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                                    <f:selectItems value="#{doktorController.itemsAvailableSelectOne}"
+                                                   var="doktorItem"
+                                                   itemValue="#{doktorItem}"/>
+                                </p:selectOneMenu>
+                            </p:panelGrid>
+                        </p:tab>
                         <p:tab title="PREGLED">
-                            <h:form id="pregled">
-                                <p:panelGrid columns="3">
-                                    <p:selectOneMenu id="zub1" value="#{pacijentController.p.zub1}" >
-                                        <f:selectItem itemLabel="Oznaka zuba"/>
-                                        <f:selectItems value="#{zubController.itemsAvailableSelectOne}"
-                                                       var="zub1Item"
-                                                       itemValue="#{zub1Item}"/>
-                                    </p:selectOneMenu>
-                                    <p:selectOneMenu id="usluga" value="#{pacijentController.p.usluga}" >
-                                        <f:selectItem itemLabel="Usluga"/>
-                                        <f:selectItems value="#{uslugaController.itemsAvailableSelectOne}"
-                                                       var="uslugaItem"
-                                                       itemValue="#{uslugaItem}"/>
-                                    </p:selectOneMenu>
-                                    <p:commandButton id="addPregled" actionListener="#{pacijentController.insertPregled}" value="Add " update="pregledList"/>
-                                </p:panelGrid>
-
-                                <p:dataTable var="p" id="pregledList" scrollable="true" scrollHeight="100" scrollRows="3"
-                                             value="#{pacijentController.selected.pregledList}" style="margin-bottom:20px">
-                                    <p:column headerText="Usluga">
-                                        <h:outputText value="#{p.usluga.naziv}" />
+                                <p:panel id="pnl" >
+                                    <p:panelGrid columns="2">
+                                        <p:outputLabel value="Datum pregleda"/>
+                                        <p:outputLabel value="Dodaj pregled"/>
+                                        <p:calendar id="datumPregleda" pattern="dd/MM/yyyy HH:mm" timeZone="GMT+2" value="#{pacijentController.p.datum}" mindate="#{pacijentController.currentDate()}" required="true"  showOn="button"/>
+                                        <p:commandButton id="addPregled" action="#{pacijentController.insertPregled()}"  value="DODAJ PREGLED "  update="pregledList"/>
+                                    </p:panelGrid>
+                                </p:panel>
+                                
+                                <p:panel id="dodavanjeIntervencije" >
+                                    <p:panelGrid columns="3">
+                                        <p:outputLabel value="ZUB"/>
+                                        <p:outputLabel value="USLUGA"/>
+                                        <p:outputLabel value="Dodaj u pregled"/>
+                                        <p:selectOneMenu id="zub1" value="#{pacijentController.i.zub1}" >
+                                            <f:selectItem itemLabel="Oznaka zuba"/>
+                                            <f:selectItems value="#{zubController.itemsAvailableSelectOne}"
+                                                           var="zub1Item"
+                                                           itemValue="#{zub1Item}"/>
+                                        </p:selectOneMenu>
+                                        <p:selectOneMenu id="usluga" value="#{pacijentController.i.usluga1}" >
+                                            <f:selectItem itemLabel="Usluga"/>
+                                            <f:selectItems value="#{uslugaController.itemsAvailableSelectOne}"
+                                                           var="uslugaItem"
+                                                           itemValue="#{uslugaItem}"/>
+                                        </p:selectOneMenu>
+                                        <p:commandButton id="addIntervencija" action="#{pacijentController.insertIntervencija()}" update="pregledList:intervencije" value="DODAJ INTERVENCIJU"/>
+                                    </p:panelGrid>
+                                </p:panel>
+                                <p:commandButton id="kraj" actionListener="#{pacijentController.novi()}" value="Novi pregled"/>
+                                <p:dataTable id="pregledList" var="pregled" reflow="true" 
+                                             scrollable="true" scrollHeight="200" scrollRows="2"  
+                                             value="#{pacijentController.selected.pregledList}" style="width:600px;">
+                                    <p:column style="width:16px">
+                                        <p:rowToggler />
                                     </p:column>
-                                    <p:column headerText="Zub">
-                                        <h:outputText value="#{p.zub1.oznaka}" />
-                                    </p:column>
-                                    <p:column headerText="Datum">
-                                        <h:outputText value="#{p.datum}">
-                                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT+2"/>
+                                    <p:column headerText="Datum izvrsenja pregleda">
+                                        <h:outputText value="#{pregled.datum}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT+2" />
                                         </h:outputText>
                                     </p:column>
+                                    <p:rowExpansion >  
+
+                                        <p:dataTable id="intervencije" scrollable="true" scrollHeight="200" scrollRows="2"  var="interv" value="#{pregled.intervencijaList}" style="width:580px;" >  
+                                            <p:column>  
+                                                <f:facet name="header">  
+                                                    <h:outputText value="Intervencije"></h:outputText>  
+                                                </f:facet>  
+                                                <h:outputText  value="#{interv.toString()}" />  
+                                            </p:column>  
+                                        </p:dataTable>  
+
+                                    </p:rowExpansion> 
+
                                 </p:dataTable>
-                            </h:form>
+                            
                         </p:tab>
 
                         <p:tab title="TERMINI">
                             <p:panelGrid columns="2">
-                                <p:calendar id="terminDatum" pattern="dd/MM/yyyy HH:mm" mindate="#{pacijentController.currentDate()}" value="#{pacijentController.t.terminPK.datum}" stepMinute="30" disabledWeekends="true" />
-                                <p:commandButton id="addTermin" actionListener="#{pacijentController.insertTermin()}" value="ADD TERMIN" update="terminList"/>
+                                <p:calendar id="terminDatum" pattern="dd/MM/yyyy HH:mm" mindate="#{pacijentController.currentDate()}" value="#{pacijentController.t.terminPK.datum}" stepMinute="30" required="true" disabledWeekends="true" />
+                                <p:commandButton id="addTermin" action="#{pacijentController.insertTermin()}" value="ADD TERMIN" update="terminList"/>
                             </p:panelGrid>
                             <p:dataTable var="t" id="terminList" scrollable="true" scrollHeight="100" scrollRows="3"
-                                         value="#{pacijentController.selected.terminList}" style="margin-bottom:20px">
+                                         value="#{pacijentController.selected.terminList}" style="width:600px;">
                                 <p:column headerText="Datum">
                                     <h:outputText value="#{t.terminPK.datum}" >
                                         <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT+2"/>
@@ -84,7 +109,7 @@
                         </p:tab>
                     </p:tabView>
                     <p:commandButton actionListener="#{pacijentController.update}" value="#{bundle.Save}" update="display,:PacijentListForm:datalist,:growl" oncomplete="handleSubmit(args, 'PacijentEditDialog');"/>
-                    <p:commandButton value="#{bundle.Cancel}"  onclick="PacijentEditDialog.hide()"/>
+                    <p:commandButton value="#{bundle.Cancel}" actionListener="#{pacijentController.resetujPregled()}"  onclick="PacijentEditDialog.hide()"/>
                 </h:panelGroup>
             </h:form>
         </p:dialog>

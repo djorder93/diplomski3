@@ -1,6 +1,7 @@
 package domen.jsf;
 
 import domen.Intervencija;
+import domen.IntervencijaPK;
 import domen.Medsestra;
 import domen.Pacijent;
 import domen.Pregled;
@@ -10,6 +11,7 @@ import domen.jsf.util.JsfUtil.PersistAction;
 import domen.beans.PacijentFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -36,8 +38,27 @@ public class PacijentController implements Serializable {
     private List<Pacijent> items = null;
     private Pacijent selected;
     private Termin t;
+    private Pregled p;
+    private Intervencija i;
+    private List<Termin> lt;
+    private List<Pregled> lp;
+    private List<Intervencija> li;
 
     public PacijentController() {
+        t = new Termin();
+        p = new Pregled();
+        i = new Intervencija();
+        lp = new ArrayList<>();
+        lt = new ArrayList<>();
+        li = new ArrayList<>();
+    }
+
+    public Pregled getP() {
+        return p;
+    }
+
+    public void setP(Pregled p) {
+        this.p = p;
     }
 
     public Termin getT() {
@@ -46,6 +67,14 @@ public class PacijentController implements Serializable {
 
     public void setT(Termin t) {
         this.t = t;
+    }
+
+    public Intervencija getI() {
+        return i;
+    }
+
+    public void setI(Intervencija i) {
+        this.i = i;
     }
 
     public Pacijent getSelected() {
@@ -61,14 +90,7 @@ public class PacijentController implements Serializable {
 
     protected void initializeEmbeddableKey() {
     }
-    public void ispis(){
-        for (Pregled p : selected.getPregledList()) {
-            System.out.println(""+p.getDatum());
-            for (Intervencija intervencija : p.getIntervencijaList()) {
-                System.out.println(intervencija.toString());
-            }
-        }
-    }
+
     public void datFilter(SelectEvent event) {
         RequestContext.getCurrentInstance().execute("PF('pacijenti').filter()");
     }
@@ -79,15 +101,54 @@ public class PacijentController implements Serializable {
         t.setPacijent1(selected);
         t.getTerminPK().setMedSestra(t.getMedsestra().getId());
         t.getTerminPK().setPacijent(t.getPacijent1().getJmbg());
-        Pacijent p = selected;
+        //Pacijent p = selected;
         if (selected.getTerminList().contains(t)) {
             JsfUtil.addErrorMessage("Termin je vec zauzet");
             t = new Termin();
             return;
         }
-        System.out.println("clkasnc");
         selected.getTerminList().add(t);
+        lt.add(t);
         t = new Termin();
+    }
+
+    public void insertPregled() {
+        System.out.println("insert pregled start");
+        p.setPacijent(selected);
+        if (selected.getPregledList().contains(p)) {
+            JsfUtil.addErrorMessage("Pregled je vec dodat ");
+            return;
+        }
+        p.setIntervencijaList(new ArrayList<>());
+        selected.getPregledList().add(p);
+        lp.add(p);
+        System.out.println("insert pregled end");
+    }
+
+    public void insertIntervencija() {
+        IntervencijaPK ipk = new IntervencijaPK();
+        ipk.setDatum(p.getDatum());
+        ipk.setZub(i.getZub1().getId());
+        ipk.setUsluga(i.getUsluga1().getId());
+        i.setIntervencijaPK(ipk);
+        i.setPregled(p);
+        p.getIntervencijaList().add(i);
+        li.add(i);
+        i = new Intervencija();
+
+    }
+
+    public void novi() {
+        p = new Pregled();
+    }
+
+    public void resetujPregled() {
+        selected.getPregledList().remove(p);
+        p = new Pregled();
+    }
+
+    public String disable() {
+        return "true";
     }
 
     public Date currentDate() {
@@ -99,9 +160,9 @@ public class PacijentController implements Serializable {
         c.set(Calendar.MILLISECOND, 0);
         return c.getTime();
     }
-  
+
     private PacijentFacade getFacade() {
-        
+
         return ejbFacade;
     }
 
@@ -149,6 +210,8 @@ public class PacijentController implements Serializable {
                 }
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
+                selected.getPregledList().removeAll(lp);
+                selected.getTerminList().removeAll(lt);
                 String msg = "";
                 Throwable cause = ex.getCause();
                 if (cause != null) {
@@ -177,7 +240,7 @@ public class PacijentController implements Serializable {
     public List<Pacijent> getItemsAvailableSelectOne() {
         return getFacade().findAll();
     }
-    
+
     @FacesConverter(forClass = Pacijent.class)
     public static class PacijentControllerConverter implements Converter {
 

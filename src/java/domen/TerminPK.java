@@ -38,6 +38,7 @@ public class TerminPK implements Serializable {
     private Date datum;
 
     public TerminPK() {
+        datum = new Date();
     }
 
     public TerminPK(int medSestra, String pacijent, Date datum) {
