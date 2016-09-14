@@ -19,6 +19,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 
 @Named("pregledController")
 @RequestScoped
@@ -30,10 +32,6 @@ public class PregledController implements Serializable {
     private Pregled selected;
 
     public PregledController() {
-    }
-    @PostConstruct
-    public void osvezi(){
-        items = getFacade().findAll();
     }
 
     public Pregled getSelected() {
@@ -52,6 +50,10 @@ public class PregledController implements Serializable {
 
     private PregledFacade getFacade() {
         return ejbFacade;
+    }
+
+    public void datFilter(SelectEvent event) {
+        RequestContext.getCurrentInstance().execute("PF('pregledi').filter()");
     }
 
     public Pregled prepareCreate() {

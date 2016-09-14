@@ -19,7 +19,7 @@
                                 <p:outputLabel value="#{bundle.EditPacijentLabel_prezime}" for="prezime" />
                                 <p:inputText id="prezime" value="#{pacijentController.selected.prezime}" title="#{bundle.EditPacijentTitle_prezime}" />
                                 <p:outputLabel value="#{bundle.EditPacijentLabel_telefon}" for="telefon" />
-                                <p:inputMask id="telefon" value="#{pacijentController.selected.telefon}"  mask="999-99-99-99?" />
+                                <p:inputMask id="telefon" value="#{pacijentController.selected.telefon}"  mask="(999) 999-999?9" />
                                 <p:outputLabel value="#{bundle.EditPacijentLabel_datumrodjenja}" for="datumrodjenja" />
                                 <p:calendar id="datumrodjenja" pattern="dd/MM/yyyy" timeZone="GMT+2" value="#{pacijentController.selected.datumrodjenja}" title="#{bundle.EditPacijentTitle_datumrodjenja}"  showOn="button"/>
                                 <p:outputLabel value="#{bundle.EditPacijentLabel_doktor}" for="doktor" />

@@ -21,30 +21,36 @@
                                  paginator="true"
                                  rowKey="#{item.terminPK}"
                                  rows="10"
+                                 widgetVar="termini"
                                  rowsPerPageTemplate="10,20,30,40,50"
                                  >
 
-                        <p:column>
+                        <p:column filterBy="#{item.terminPK.datum}" filterMatchMode="contains">
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTerminTitle_terminPK_datum}"/>
+                                <h:outputText value="#{bundle.ListPregledTitle_datum}"/>
                             </f:facet>
-                            <h:outputText value="#{item.terminPK.datum}">
-                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            <f:facet name="filter">
+                                <p:calendar yearRange="c-100:c+100" navigator="true" pattern="dd/MM/yyyy HH:mm" onkeyup="PF('pacijenti').filter()">
+                                    <p:ajax event="dateSelect" listener="#{terminController.datFilter}"/>
+                                </p:calendar>
+                            </f:facet>
+                            <h:outputText value="#{item.terminPK.getsDatum()}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT+2" />
                             </h:outputText>
                         </p:column>
-                        <p:column>
+                        <p:column filterBy="#{item.pacijent1}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTerminTitle_pacijent1}"/>
                             </f:facet>
                             <h:outputText value="#{item.pacijent1.toString()}"/>
                         </p:column>
-                        <p:column>
+                        <p:column filterBy="#{item.medsestra}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTerminTitle_medsestra}"/>
                             </f:facet>
                             <h:outputText value="#{item.medsestra.toString()}"/>
                         </p:column>
-                       
+
                     </p:dataTable>
                 </p:panel>
             </h:form>

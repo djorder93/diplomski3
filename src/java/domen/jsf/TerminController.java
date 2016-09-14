@@ -12,15 +12,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 
 @Named("terminController")
-@SessionScoped
+@RequestScoped
 public class TerminController implements Serializable {
 
     @EJB
@@ -37,6 +40,10 @@ public class TerminController implements Serializable {
 
     public void setSelected(Termin selected) {
         this.selected = selected;
+    }
+
+    public void datFilter(SelectEvent event) {
+        RequestContext.getCurrentInstance().execute("PF('termini').filter()");
     }
 
     protected void setEmbeddableKeys() {

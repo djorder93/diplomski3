@@ -27,35 +27,29 @@
                         <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
                         <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
 
-                        <p:column>
+                        <p:column filterBy="#{item.id}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListMedsestraTitle_id}"/>
                             </f:facet>
                             <h:outputText value="#{item.id}"/>
                         </p:column>
-                        <p:column>
+                        <p:column filterBy="#{item.ime}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListMedsestraTitle_ime}"/>
                             </f:facet>
                             <h:outputText value="#{item.ime}"/>
                         </p:column>
-                        <p:column>
+                        <p:column filterBy="#{item.prezime}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListMedsestraTitle_prezime}"/>
                             </f:facet>
                             <h:outputText value="#{item.prezime}"/>
                         </p:column>
-                        <p:column>
+                        <p:column filterBy="#{item.username}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListMedsestraTitle_username}"/>
                             </f:facet>
                             <h:outputText value="#{item.username}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListMedsestraTitle_password}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.password}"/>
                         </p:column>
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{medsestraController.prepareCreate}" update=":MedsestraCreateForm" oncomplete="PF('MedsestraCreateDialog').show()"/>

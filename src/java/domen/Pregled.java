@@ -6,6 +6,7 @@
 package domen;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +24,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -51,9 +53,19 @@ public class Pregled implements Serializable {
     @JoinColumn(name = "pacijent", referencedColumnName = "jmbg")
     @ManyToOne(fetch = FetchType.EAGER)
     private Pacijent pacijent;
+    @Transient
+    private String sDatum;
 
     public Pregled() {
         intervencijaList = new ArrayList<>();
+    }
+
+    public String getsDatum() {
+        return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(datum);
+    }
+
+    public void setsDatum(String sDatum) {
+        this.sDatum = sDatum;
     }
 
     public Pregled(Date datum) {

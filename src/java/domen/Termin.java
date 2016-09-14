@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -43,7 +44,7 @@ public class Termin implements Serializable {
 
     public Termin() {
         terminPK = new TerminPK();
-   }
+    }
 
     public Termin(TerminPK terminPK) {
         this.terminPK = terminPK;
@@ -101,5 +102,5 @@ public class Termin implements Serializable {
     public String toString() {
         return "domen.Termin[ terminPK=" + terminPK + " ]";
     }
-    
+
 }

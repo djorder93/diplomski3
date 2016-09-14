@@ -6,12 +6,14 @@
 package domen;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -36,11 +38,21 @@ public class TerminPK implements Serializable {
     @Column(name = "datum")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datum;
+    @Transient
+    private String sDatum;
 
     public TerminPK() {
         datum = new Date();
     }
 
+    public String getsDatum() {
+        return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(datum);
+    }
+
+    public void setsDatum(String sDatum) {
+        this.sDatum = sDatum;
+    }
+    
     public TerminPK(int medSestra, String pacijent, Date datum) {
         this.medSestra = medSestra;
         this.pacijent = pacijent;
@@ -103,5 +115,5 @@ public class TerminPK implements Serializable {
     public String toString() {
         return "domen.TerminPK[ medSestra=" + medSestra + ", pacijent=" + pacijent + ", datum=" + datum + " ]";
     }
-    
+
 }

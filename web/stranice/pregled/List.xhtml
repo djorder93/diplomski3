@@ -21,21 +21,28 @@
                                  paginator="true"
                                  rowKey="#{item.datum}"
                                  rows="10"
+                                  widgetVar="pregledi"
                                  rowsPerPageTemplate="10,20,30,40,50"
+                                 filterDelay="150"
                                  >
 
                         <p:column style="width:16px">
                             <p:rowToggler />
                         </p:column>
-                        <p:column>
+                        <p:column filterBy="#{item.datum}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListPregledTitle_datum}"/>
                             </f:facet>
-                            <h:outputText value="#{item.datum}">
-                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                            <f:facet name="filter">
+                                <p:calendar yearRange="c-100:c+100" navigator="true" pattern="dd/MM/yyyy HH:mm" onkeyup="PF('pacijenti').filter()">
+                                    <p:ajax event="dateSelect" listener="#{pregledController.datFilter}"/>
+                                </p:calendar>
+                            </f:facet>
+                            <h:outputText value="#{item.getsDatum()}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT+2" />
                             </h:outputText>
                         </p:column>
-                        <p:column>
+                        <p:column filterBy="#{item.pacijent}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListPregledTitle_pacijent}"/>
                             </f:facet>
