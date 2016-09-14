@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="IntervencijaViewDlg" widgetVar="IntervencijaViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewIntervencijaTitle}">
+            <h:form id="IntervencijaViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{intervencijaController.selected != null}">
+                        <h:outputText value="#{bundle.ViewIntervencijaLabel_pregled}"/>
+                        <h:outputText value="#{intervencijaController.selected.pregled}" title="#{bundle.ViewIntervencijaTitle_pregled}"/>
+                        <h:outputText value="#{bundle.ViewIntervencijaLabel_zub1}"/>
+                        <h:outputText value="#{intervencijaController.selected.zub1}" title="#{bundle.ViewIntervencijaTitle_zub1}"/>
+                        <h:outputText value="#{bundle.ViewIntervencijaLabel_usluga1}"/>
+                        <h:outputText value="#{intervencijaController.selected.usluga1}" title="#{bundle.ViewIntervencijaTitle_usluga1}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="IntervencijaViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

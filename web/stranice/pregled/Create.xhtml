@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PregledCreateDlg" widgetVar="PregledCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreatePregledTitle}">
+            <h:form id="PregledCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{pregledController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreatePregledLabel_datum}" for="datum" />
+                        <p:calendar id="datum" pattern="MM/dd/yyyy HH:mm:ss" value="#{pregledController.selected.datum}" title="#{bundle.EditPregledTitle_datum}" required="true" requiredMessage="#{bundle.EditPregledRequiredMessage_datum}" showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreatePregledLabel_pacijent}" for="pacijent" />
+                        <p:selectOneMenu id="pacijent" value="#{pregledController.selected.pacijent}" >
+                            <f:selectItems value="#{pacijentController.itemsAvailableSelectOne}"
+                                           var="pacijentItem"
+                                           itemValue="#{pacijentItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{pregledController.create}" value="#{bundle.Save}" update="display,:PregledListForm:datalist,:growl" oncomplete="handleSubmit(args,'PregledCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="PregledCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

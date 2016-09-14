@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="IntervencijaEditDlg" widgetVar="IntervencijaEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditIntervencijaTitle}">
+            <h:form id="IntervencijaEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{intervencijaController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditIntervencijaLabel_pregled}" for="pregled" />
+                        <p:selectOneMenu id="pregled" value="#{intervencijaController.selected.pregled}" required="true" requiredMessage="#{bundle.EditIntervencijaRequiredMessage_pregled}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{pregledController.itemsAvailableSelectOne}"
+                                           var="pregledItem"
+                                           itemValue="#{pregledItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditIntervencijaLabel_zub1}" for="zub1" />
+                        <p:selectOneMenu id="zub1" value="#{intervencijaController.selected.zub1}" required="true" requiredMessage="#{bundle.EditIntervencijaRequiredMessage_zub1}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{zubController.itemsAvailableSelectOne}"
+                                           var="zub1Item"
+                                           itemValue="#{zub1Item}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditIntervencijaLabel_usluga1}" for="usluga1" />
+                        <p:selectOneMenu id="usluga1" value="#{intervencijaController.selected.usluga1}" required="true" requiredMessage="#{bundle.EditIntervencijaRequiredMessage_usluga1}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{uslugaController.itemsAvailableSelectOne}"
+                                           var="usluga1Item"
+                                           itemValue="#{usluga1Item}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{intervencijaController.update}" value="#{bundle.Save}" update="display,:IntervencijaListForm:datalist,:growl" oncomplete="handleSubmit(args, 'IntervencijaEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="IntervencijaEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
